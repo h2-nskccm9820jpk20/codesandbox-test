@@ -1,10 +1,34 @@
-import "./styles.css";
+//DOM
+const button = document.getElementById("addBtn");
+const table = document.getElementById("table-user");
 
-document.getElementById("app").innerHTML = `
-<h1>Hello Vanilla!</h1>
-<div>
-  We use the same configuration as Parcel to bundle this sandbox, you can find more
-  info about Parcel 
-  <a href="https://parceljs.org" target="_blank" rel="noopener noreferrer">here</a>.
-</div>
-`;
+// 関数（メソッド）
+async function callWebApi() {
+  const users = await getUsers();
+
+  users.forEach(addList);
+}
+
+async function getUsers() {
+  const url = "https://jsonplaceholder.typicode.com/users";
+  //  console.log("url:" + url);
+  const res = await fetch(url);
+  return await res.json();
+}
+
+function addList(user) {
+  let newRow;
+  let newCell;
+  let newText;
+  newRow = table.insertRow();
+
+  newCell = newRow.insertCell(0);
+  newText = document.createTextNode(user.name);
+  newCell.appendChild(newText);
+
+  newCell = newRow.insertCell(1);
+  newText = document.createTextNode(user.email);
+  newCell.appendChild(newText);
+}
+
+button.addEventListener("click", callWebApi);
